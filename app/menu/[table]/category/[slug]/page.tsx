@@ -59,19 +59,19 @@ export default function HotMenuPage() {
               <div
                 className={`
                   flex items-center gap-1.5 py-4 transition-all duration-300 ease-out
-                  ${qty === 0 ? 'w-1/4 justify-center' : 'w-2/5 justify-between'}
+                  ${qty === 0 ? 'w-1/6 justify-center' : 'w-2/5 justify-between'}
                 `}
               >
                 {qty > 0 ? (
                   <>
                     <button
                       onClick={() => updateQty(item.name, -1)}
-                      className="w-10 h-10 flex items-center justify-center bg-white rounded-xl text-red-500 hover:text-red-400 hover:bg-red-50 active:bg-red-100 transition shadow-sm text-xl"
+                      className="w-10 h-10 flex items-center justify-center bg-white rounded-xl text-black0 active:bg-red-100 transition shadow-sm text-xl"
                     >
                       🗑️
                     </button>
 
-                    <div className="w-11 h-10 flex items-center justify-center bg-gray-800 rounded-xl text-white text-xl font-bold shadow-inner min-w-[2.75rem]">
+                    <div className="w-11 h-10 flex items-center justify-center bg-white rounded-xl text-black text-xl font-bold shadow-inner min-w-11">
                       {qty}
                     </div>
 
@@ -85,7 +85,7 @@ export default function HotMenuPage() {
                 ) : (
                   <button
                     onClick={() => updateQty(item.name, 1)}
-                    className="min-w-[100px] h-22 flex items-center justify-center bg-white rounded-2xl text-black text-4xl font-bold shadow-lg hover:bg-amber-500 active:scale-95 transition-all duration-300"
+                    className="min-w-15 h-22 flex items-center justify-center bg-white rounded-2xl text-black text-4xl font-bold shadow-lg hover:bg-amber-500 active:scale-95 transition-all duration-300"
                   >
                     +
                   </button>
