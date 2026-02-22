@@ -1,8 +1,9 @@
 'use client';
 
 import { useCart } from '@/contexts/CartContex';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, ArrowLeft } from 'lucide-react'; 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type Item = {
   name: string;
@@ -20,13 +21,14 @@ const items: Item[] = [
 ];
 
 export default function HotMenuPage() {
-  const { addToCart, updateQuantity, cart } = useCart()
+  const { addToCart, updateQuantity, cart } = useCart();
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
+  const router = useRouter(); 
 
   const getItemQty = (name: string) => {
-    return cart.find((i) => i.name === name)?.quantity || 0
-  }
+    return cart.find((i) => i.name === name)?.quantity || 0;
+  };
 
   const updateQty = (name: string, delta: number) => {
     setQuantities((prev) => {
@@ -37,8 +39,19 @@ export default function HotMenuPage() {
   };
 
   return (
-    <div className="min-h-screen text-white font-sans pb-24">
-      <div className="text-center py-8">
+    <div className="min-h-screen text-white font-sans pb-24 relative">
+
+
+      <div className=" flex flex-row-reverse justify-center items-center gap-5 py-8">
+        <button
+          onClick={() => router.back()}
+          className=" flex items-center gap-2 px-4 py-2.5 
+                   bg-white/20 backdrop-blur-sm rounded-xl text-white font-medium
+                   hover:bg-white/30 active:bg-white/40 transition-all shadow-md"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          بازگشت
+        </button>
         <h2 className="text-3xl md:text-4xl font-bold text-amber-200 drop-shadow-lg">
           منو بار گرم
         </h2>
@@ -98,7 +111,6 @@ export default function HotMenuPage() {
                   </button>
                 )}
               </div>
-
 
               <div className="flex-1 w-3/4 bg-white rounded-2xl overflow-hidden">
                 <div className="flex flex-row-reverse items-center justify-between px-4 py-3">
