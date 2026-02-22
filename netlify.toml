@@ -1,7 +1,9 @@
-# netlify.toml
 [build]
   command = "npm run build"
   publish = ".next"
 
+[functions]
+  node_bundler = "esbuild"  # کمک به bundling بهتر
+
 [[plugins]]
-package = "@netlify/plugin-nextjs"  # این پلاگین قدیمی‌تره اما هنوز برای force کردن کار می‌کنه
+package = "@netlify/plugin-nextjs"
