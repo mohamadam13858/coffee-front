@@ -1,25 +1,32 @@
 'use client';
 
+import { useCart } from '@/contexts/CartContex';
 import { ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 
 type Item = {
   name: string;
-  price: string;
+  price: number;
   desc: string;
 };
 
 const items: Item[] = [
-  { name: 'اسپرسو', price: '۱۰۰', desc: 'دوبل شات. عربیکا ۱۰۰%' },
-  { name: 'آمریکانو', price: '۱۱۵', desc: 'اسپرسو + آب داغ' },
-  { name: 'کاپوچینو', price: '۱۴۵', desc: 'اسپرسو + شیر + فوم غلیظ' },
-  { name: 'لاته', price: '۱۵۰', desc: 'اسپرسو + شیر بخارپز + کمی فوم' },
-  { name: 'موکا', price: '۱۷۰', desc: 'اسپرسو + شکلات + شیر + خامه' },
-  { name: 'هات چاکلت', price: '۱۶۰', desc: 'شکلات داغ + شیر + خامه' },
+  { name: 'اسپرسو', price: 100, desc: 'دوبل شات. عربیکا ۱۰۰%' },
+  { name: 'آمریکانو', price: 159, desc: 'اسپرسو + آب داغ' },
+  { name: 'کاپوچینو', price: 44, desc: 'اسپرسو + شیر + فوم غلیظ' },
+  { name: 'لاته', price: 780, desc: 'اسپرسو + شیر بخارپز + کمی فوم' },
+  { name: 'موکا', price: 780, desc: 'اسپرسو + شکلات + شیر + خامه' },
+  { name: 'هات چاکلت', price: 780, desc: 'شکلات داغ + شیر + خامه' },
 ];
 
 export default function HotMenuPage() {
+  const { addToCart, updateQuantity, cart } = useCart()
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+
+
+  const getItemQty = (name: string) => {
+    return cart.find((i) => i.name === name)?.quantity || 0
+  }
 
   const updateQty = (name: string, delta: number) => {
     setQuantities((prev) => {
@@ -49,7 +56,7 @@ export default function HotMenuPage() {
 
       <div className="px-4 py-5 space-y-4">
         {items.map((item) => {
-          const qty = quantities[item.name] || 0;
+          const qty = getItemQty(item.name);
 
           return (
             <div
@@ -65,7 +72,7 @@ export default function HotMenuPage() {
                 {qty > 0 ? (
                   <>
                     <button
-                      onClick={() => updateQty(item.name, -1)}
+                      onClick={() => updateQuantity(item.name, -1)}
                       className="w-10 h-10 flex items-center justify-center bg-white rounded-xl text-black0 active:bg-red-100 transition shadow-sm text-xl"
                     >
                       🗑️
@@ -76,7 +83,7 @@ export default function HotMenuPage() {
                     </div>
 
                     <button
-                      onClick={() => updateQty(item.name, 1)}
+                      onClick={() => updateQuantity(item.name, 1)}
                       className="w-10 h-10 flex items-center justify-center bg-white rounded-xl text-amber-600 hover:bg-amber-100 active:bg-amber-200 transition shadow-sm text-2xl font-bold"
                     >
                       +
@@ -84,7 +91,7 @@ export default function HotMenuPage() {
                   </>
                 ) : (
                   <button
-                    onClick={() => updateQty(item.name, 1)}
+                    onClick={() => addToCart({ name: item.name, price: item.price * 1000 })}
                     className="min-w-15 h-22 flex items-center justify-center bg-white rounded-2xl text-black text-4xl font-bold shadow-lg hover:bg-amber-500 active:scale-95 transition-all duration-300"
                   >
                     +
@@ -92,7 +99,7 @@ export default function HotMenuPage() {
                 )}
               </div>
 
-            
+
               <div className="flex-1 w-3/4 bg-white rounded-2xl overflow-hidden">
                 <div className="flex flex-row-reverse items-center justify-between px-4 py-3">
                   <div className="text-center">

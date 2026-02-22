@@ -1,18 +1,21 @@
+import { CartProvider } from "@/contexts/CartContex";
 import CartFooter from "@/components/footer/cartFooter";
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fa" dir="rtl">
-      <body className="min-h-screen bg-gray-950 text-gray-100 pb-20"> {/* pb-20 برای جلوگیری از همپوشانی محتوا با فوتر */}
-        
-        <main className="flex-grow">
-          {children}
-        </main>
+    <div lang="fa" dir="rtl">
+      <div className="min-h-screen  text-gray-100 pb-20">
+        <CartProvider>
 
-        <CartFooter itemCount={3} /> 
-        
-      </body>
-    </html>
+          <main className="flex-grow">
+            {children}
+          </main>
+
+          <CartFooter />
+        </CartProvider>
+
+      </div>
+    </div>
   );
 }
