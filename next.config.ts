@@ -2,20 +2,24 @@
 import withSerwistInit from '@serwist/next';
 
 const withSerwist = withSerwistInit({
-  swSrc: 'app/sw.ts',                    // مسیر فایل service worker خودت
-  swDest: 'public/sw.js',                // جایی که فایل نهایی sw.js ساخته می‌شه
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
   additionalPrecacheEntries: [
-    { url: '/offline.html', revision: null },  // اگر صفحه آفلاین داری
+    { url: '/offline.html', revision: null },
   ],
-  disable: process.env.NODE_ENV === 'development',  // در dev غیرفعال باشه
-  // گزینه‌های اختیاری مفید:
-  cacheOnNavigation: true,               // کش صفحات موقع navigation
-  reloadOnOnline: true,                  // ریلود وقتی آنلاین می‌شه
+  disable: process.env.NODE_ENV === 'development',
+  cacheOnNavigation: true,
+  reloadOnOnline: true,
 });
 
-export default withSerwist({
-  // اینجا بقیه تنظیمات Next.js خودت رو بگذار (اگر داری)
-  // مثلاً:
-  // reactStrictMode: true,
-  // images: { ... },
-});
+/** @type {import('next').NextConfig} */  // ← این خط مهمه (یا import type { NextConfig })
+const baseConfig: import('next').NextConfig = {
+  output: 'export',  // ← حالا TypeScript قبول می‌کنه چون literal string هست
+  images: {
+    unoptimized: true,  // اجباری برای static export
+  },
+  // اگر لازم داری:
+  // trailingSlash: true,
+};
+
+export default withSerwist(baseConfig);
