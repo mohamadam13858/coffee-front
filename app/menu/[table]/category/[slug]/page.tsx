@@ -23,6 +23,7 @@ const items: Item[] = [
 export default function HotMenuPage() {
   const { addToCart, updateQuantity, cart } = useCart();
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+  
 
   const router = useRouter(); 
 

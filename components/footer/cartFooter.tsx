@@ -1,20 +1,19 @@
 'use client';
 
-import { useRouter, usePathname, useParams } from 'next/navigation';
+import { useRouter, usePathname, useParams, useSearchParams } from 'next/navigation';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/contexts/CartContex';
 
 export default function CartFooter() {
-  const params = useParams();
-  const encodedTable = params.table as string;
-  const table = decodeURIComponent(encodedTable);
+  const searchParams = useSearchParams();
+  const table = searchParams.get('table')
 
   const router = useRouter();
   const pathname = usePathname();
   const { totalItems, totalPrice } = useCart();
 
   if (totalItems === 0) return null;
-  const isCartPage = pathname === `/menu/${encodedTable}/category/cart`;
+  const isCartPage = pathname === `/menu/${table}/category/cart`;
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-50 bg-[#463123] backdrop-blur-md border-t border-[#463123] shadow-2xl">
