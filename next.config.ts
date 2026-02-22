@@ -14,9 +14,9 @@ const withSerwist = withSerwistInit({
 
 /** @type {import('next').NextConfig} */  // ← این خط مهمه (یا import type { NextConfig })
 const baseConfig: import('next').NextConfig = {
-  // output: 'export',  // ← حالا TypeScript قبول می‌کنه چون literal string هست
+
   images: {
-    unoptimized: true,  // اجباری برای static export
+    unoptimized: false,  // اجباری برای static export
   },
   // اگر لازم داری:
   // trailingSlash: true,

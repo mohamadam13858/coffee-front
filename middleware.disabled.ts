@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const MOBILE_BREAKPOINT = 768; // می‌تونی تغییر بدی
 
-// لیست صفحاتی که حتی روی دسکتاپ هم باید نشون داده بشن (اختیاری)
-// مثلاً داشبورد ادمین یا صفحه لاگین
+
 const PUBLIC_DESKTOP_PATHS = ['/admin', '/login', '/about'];
 
 export function middleware(request: NextRequest) {
@@ -34,13 +33,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * همه مسیرها به جز:
-     * - api (برای API routes)
-     * - _next/static (فایل‌های استاتیک)
-     * - _next/image (ایمیج اپتیمایزر)
-     * - favicon.ico
-     */
+
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
