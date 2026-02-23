@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'منو بار گرم',
-        short_name: 'بار گرم',
-        description: 'منوی دیجیتال کافه – سفارش آنلاین قهوه و نوشیدنی گرم',
+        name: 'کافه کروسان',
+        short_name: 'کروسان',
+        description: 'منوی دیجیتال کافه – سفارش آنلاین قهوه و نوشیدنی ',
         start_url: '/',
         display: 'standalone',        
         background_color: '#111827',     

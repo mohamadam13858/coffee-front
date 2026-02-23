@@ -1,4 +1,3 @@
-// next.config.ts
 import withSerwistInit from '@serwist/next';
 
 const withSerwist = withSerwistInit({
@@ -12,14 +11,12 @@ const withSerwist = withSerwistInit({
   reloadOnOnline: true,
 });
 
-/** @type {import('next').NextConfig} */  // ← این خط مهمه (یا import type { NextConfig })
+/** @type {import('next').NextConfig} */  
 const baseConfig: import('next').NextConfig = {
 
   images: {
-    unoptimized: false,  // اجباری برای static export
+    unoptimized: true,  
   },
-  // اگر لازم داری:
-  // trailingSlash: true,
 };
 
 export default withSerwist(baseConfig);

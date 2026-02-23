@@ -3,8 +3,8 @@ import './globals.css';
 import Header from '@/components/header/header';
 
 export const metadata: Metadata = {
-  title: 'سان کروسان کافه',
-  description: 'خوش آمدید به کافه سان کروسان – قهوه، کروسان و لحظات خوب',
+  title: 'کروسان کافه',
+  description: 'خوش آمدید به کافه کروسان – قهوه، کروسان و لحظات خوب',
   manifest: '/manifest'
 };
 

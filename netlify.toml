@@ -3,7 +3,7 @@
   publish = ".next"
 
 [functions]
-  node_bundler = "esbuild"  # کمک به bundling بهتر
+  node_bundler = "esbuild" 
 
 [[plugins]]
 package = "@netlify/plugin-nextjs"
