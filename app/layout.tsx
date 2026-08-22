@@ -1,11 +1,19 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Header from '@/components/header/header';
+import { Geist } from 'next/font/google';
+import { cn } from '@/lib/utils';
+import { Toaster } from '@/components/ui/toast';
+import { AppBackground } from '@/components/layout/app-background';
+
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
-  title: 'کروسان کافه',
-  description: 'خوش آمدید به کافه کروسان – قهوه، کروسان و لحظات خوب',
-  manifest: '/manifest'
+  title: 'کافه سان کروسان',
+  description: 'طعمی که هر روز بهش فکر میکنی ☕',
+  manifest: '/manifest',
 };
 
 export default function RootLayout({
@@ -14,17 +22,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" className={cn('font-sans', geist.variable)}>
       <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="theme-color" content="#d97706" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
-        <main className="flex-1 h-full">
-          <Header />
+        <AppBackground/>
+        <main className="relative z-10">
           {children}
         </main>
+        <Toaster />
       </body>
     </html>
   );

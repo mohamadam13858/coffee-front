@@ -1,29 +1,46 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
+
+/* ===== CSS Variables ===== */
 :root {
-  --background: #ffffff;
+  --background: #faf6f0;
   --foreground: #171717;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --shadow: 0 20px 60px rgba(92, 64, 51, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1410;
     --foreground: #ededed;
+    --card-bg: rgba(30, 20, 15, 0.9);
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 }
 
-body {
+/* ===== Base ===== */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
   min-height: 100vh;
-  background-color: var(--background);          
-  background-image: url("/black.png");          
+  background-color: var(--background);
+  /* background-image: url("/black.png"); */
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Vazirmatn', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
