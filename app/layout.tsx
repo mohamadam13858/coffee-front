@@ -5,7 +5,7 @@ import { AppBackground } from '@/components/layout/app-background';
 
 
 export const metadata: Metadata = {
-  title: 'کافه سان کروسان',
+  title: 'کافه کروسان',
   description: 'طعمی که هر روز بهش فکر میکنی ☕',
   manifest: '/manifest',
 };
