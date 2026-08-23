@@ -39,7 +39,6 @@ export default function SignUpPage() {
     >
 
       <div className="relative z-10 w-full max-w-[440px]">
-        {/* Brand */}
         <div className="mb-6 text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 shadow-[0_0_40px_rgba(245,158,11,0.12)]">
             <Coffee className="h-7 w-7 text-amber-400" />
@@ -52,8 +51,8 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        {/* Card */}
-        <Card className="!border-0 overflow-hidden rounded-3xl bg-white/[0.025] shadow-[0_25px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+
+        <Card className=" overflow-hidden rounded-3xl bg-white/[0.025] shadow-[0_25px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl">
           <CardHeader className="px-7 pb-5 pt-8 text-center">
             <CardTitle className="text-2xl font-bold tracking-tight text-white">
               ساخت حساب کاربری
@@ -67,7 +66,7 @@ export default function SignUpPage() {
           <CardContent className="px-7 pb-7">
             <form className="space-y-5">
 
-              {/* Name */}
+
               <div className="space-y-2">
                 <Label
                   htmlFor="name"
@@ -96,7 +95,7 @@ export default function SignUpPage() {
                 />
               </div>
 
-              {/* Mobile */}
+
               <div className="space-y-2">
                 <Label
                   htmlFor="mobile"
@@ -133,7 +132,7 @@ export default function SignUpPage() {
                 </div>
               </div>
 
-              {/* Password */}
+
               <div className="space-y-2">
                 <Label
                   htmlFor="password"
@@ -193,7 +192,7 @@ export default function SignUpPage() {
                 </p>
               </div>
 
-              {/* Confirm Password */}
+
               <div className="space-y-2">
                 <Label
                   htmlFor="confirmPassword"
@@ -251,7 +250,7 @@ export default function SignUpPage() {
                 </div>
               </div>
 
-              {/* Terms */}
+
               <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5">
                 <div className="flex items-start gap-3">
                   <Checkbox
@@ -291,7 +290,7 @@ export default function SignUpPage() {
                 </div>
               </div>
 
-              {/* Submit */}
+
               <Button
                 type="submit"
                 disabled={!acceptedTerms}
@@ -335,7 +334,7 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            {/* Sign in */}
+
             <div className="text-center text-sm">
               <span className="text-neutral-500">
                 حساب کاربری دارید؟
@@ -355,7 +354,6 @@ export default function SignUpPage() {
             </div>
           </CardContent>
 
-          {/* Footer */}
           <div className="border-t border-white/[0.05] bg-black/10 px-7 py-4 text-center">
             <p className="text-[11px] text-neutral-700">
               © کافه سان کروسان • تمامی حقوق محفوظ است
@@ -363,7 +361,7 @@ export default function SignUpPage() {
           </div>
         </Card>
 
-        {/* Bottom text */}
+
         <p className="mt-5 text-center text-[11px] text-neutral-700">
           یک تجربه گرم، درست مثل اولین فنجان قهوه ☕
         </p>
