@@ -99,7 +99,7 @@ export function SignUpForm() {
 
                 <FormField
                     control={form.control}
-                    name='password'
+                    name='confirmPassword'
                     render={({ field }) => (
 
                         <FormItem>
