@@ -29,19 +29,19 @@ export function SignUpForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} >
+            <form className='w-full flex flex-col gap-4 ' onSubmit={form.handleSubmit(onSubmit)} >
                 <FormField
                     control={form.control}
                     name='name'
                     render={({ field }) => (
 
                         <FormItem>
-                            <FormLabel>
+                            <FormLabel className='text-sm font-medium text-neutral-300'>
                                 نام و نام خانوادگی
                             </FormLabel>
 
                             <FormControl>
-                                <Input placeholder='نام و نام خانوادگی'  {...field} />
+                                <Input className='h-11  bg-neutral-900/70 border-neutral-800 text-white placeholder:text-neutral-600 focus-visible:border-amber-500 focus-visible:ring-amber-500/20' placeholder='نام و نام خانوادگی'  {...field} />
                             </FormControl>
 
 
@@ -58,12 +58,12 @@ export function SignUpForm() {
                     render={({ field }) => (
 
                         <FormItem>
-                            <FormLabel>
+                            <FormLabel className='text-sm font-medium text-neutral-300'>
                                 شماره موبایل
                             </FormLabel>
 
                             <FormControl>
-                                <Input type='tel' inputMode='numeric' placeholder='091234567891' dir='ltr'  {...field} />
+                                <Input className='h-11  bg-neutral-900/70 border-neutral-800 text-white placeholder:text-neutral-600 focus-visible:border-amber-500 focus-visible:ring-amber-500/20' type='tel' inputMode='numeric' placeholder='09123456789' dir='ltr'  {...field} />
                             </FormControl>
 
 
@@ -80,7 +80,7 @@ export function SignUpForm() {
                     render={({ field }) => (
 
                         <FormItem>
-                            <FormLabel>
+                            <FormLabel className='text-sm font-medium text-neutral-300'>
                                 رمز عبور
                             </FormLabel>
 
@@ -103,7 +103,7 @@ export function SignUpForm() {
                     render={({ field }) => (
 
                         <FormItem>
-                            <FormLabel>
+                            <FormLabel className='text-sm font-medium text-neutral-300'>
                                 تکرار رمز عبور
                             </FormLabel>
 
@@ -130,8 +130,8 @@ export function SignUpForm() {
                                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                                 </FormControl>
 
-                                <FormLabel>
-                                    با ثبت نام . قوانین و حریم خصوصی را میپذیرم
+                                <FormLabel className='text-sm font-medium text-neutral-300'>
+                                    با ثبت‌نام، قوانین و حریم خصوصی را می‌پذیرم
                                 </FormLabel>
                             </div>
 
@@ -142,7 +142,7 @@ export function SignUpForm() {
 
 
 
-                <Button type='submit' className={"w-full"} disabled={form.formState.isSubmitting}>
+                <Button className="h-11 w-full bg-amber-600 font-medium text-white shadow-lg shadow-amber-950/20 transition-all hover:bg-amber-500 hover:shadow-amber-950/30" type='submit'  disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? 'لطفا صبر کنید...' : 'ثبت نام'}
                 </Button>
             </form>

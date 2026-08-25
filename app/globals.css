@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap");
 
-/* ===== CSS Variables ===== */
 :root {
   --background: #faf6f0;
   --foreground: #171717;
@@ -19,12 +18,8 @@
   }
 }
 
-/* ===== Base ===== */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 html {
@@ -34,13 +29,8 @@ html {
 body {
   min-height: 100vh;
   background-color: var(--background);
-  /* background-image: url("/black.png"); */
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
   color: var(--foreground);
-  font-family: 'Vazirmatn', 'Arial', sans-serif;
+  font-family: "Vazirmatn", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

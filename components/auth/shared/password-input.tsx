@@ -1,6 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { Eye, EyeOff } from 'lucide-react'
 import React, { useState } from 'react'
 import type { ComponentProps } from 'react'
@@ -10,7 +11,13 @@ export default function PasswordInput({ className, ...props }: PasswordInputProp
     const [showPassword, setShowPassword] = useState(false)
     return (
         <div className='relative'>
-            <Input {...props} type={showPassword ? 'text' : 'password'} className={className} />
+            <Input {...props} type={showPassword ? 'text' : 'password'} className={cn(
+                "h-11 bg-neutral-900/70 border-neutral-800 text-white",
+                "placeholder:text-neutral-600",
+                "focus-visible:border-amber-500",
+                "focus-visible:ring-amber-500/20",
+                className
+            )} />
 
             <Button type='button'
                 variant="ghost"
