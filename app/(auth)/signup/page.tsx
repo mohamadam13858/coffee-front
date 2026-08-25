@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { SignUpForm } from '@/components/auth/signup/signup-form';
+import { SignUpForm } from '@/components/features/auth/components/signup/signup-form';
 
 export default function SignUpPage() {
 
@@ -28,9 +28,9 @@ export default function SignUpPage() {
         <SignUpForm />
       </CardContent>
 
-      <CardFooter className="justify-center border-t border-neutral-800/70 bg-transparent">
+      <CardFooter className="justify-center border-t border-neutral-800/70 bg-transparent pb-3">
         <p className="text-sm text-neutral-400">
-          حساب کاربری دارید؟
+          حس  اب کاربری دارید؟
 
           <a
             href="/signin"

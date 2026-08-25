@@ -1,4 +1,4 @@
-import { AuthBrand } from "@/components/auth/shared/auth-brand";
+import { AuthBrand } from "@/components/features/auth/components/shared/auth-brand";
 import type { ReactNode } from "react";
 
 export default function AuthLayout({
