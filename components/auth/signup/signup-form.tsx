@@ -142,7 +142,7 @@ export function SignUpForm() {
 
 
 
-                <Button className="h-11 w-full bg-amber-600 font-medium text-white shadow-lg shadow-amber-950/20 transition-all hover:bg-amber-500 hover:shadow-amber-950/30" type='submit'  disabled={form.formState.isSubmitting}>
+                <Button className="h-11 w-full bg-amber-800 font-medium text-white shadow-lg shadow-amber-950/20 transition-all hover:bg-amber-700 hover:shadow-amber-950/30 cursor-pointer" type='submit'  disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? 'لطفا صبر کنید...' : 'ثبت نام'}
                 </Button>
             </form>
