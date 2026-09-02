@@ -1,137 +1,272 @@
-"use client"
+"use client";
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { signUpSchema } from '@/components/features/auth/schemas/signup.schema'
-import { SignUpFormValues } from '@/components/features/auth/types/auth.type'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import PasswordInput from '../shared/password-input'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Button } from '@/components/ui/button'
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+
+import PasswordInput from "../shared/password-input";
+
+import { getHttpError } from "@/lib/http";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SignUpFormValues, signUpSchema } from "../../schemas/signup.schema";
+import { signUp } from "../../services/auth.service";
 
 export function SignUpForm() {
-    const form = useForm<SignUpFormValues>({
-        resolver: zodResolver(signUpSchema),
-        defaultValues: {
-            name: "",
-            phone: "",
-            password: "",
-            confirmPassword: "",
-            acceptedTerms: false
+    const router = useRouter();
+
+    const [serverError, setServerError] =
+        useState<string | null>(null);
+
+    const form =
+        useForm<SignUpFormValues>({
+            resolver:
+                zodResolver(signUpSchema),
+
+            defaultValues: {
+                firstName: "",
+                lastName: "",
+                mobile: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                acceptedTerms: false,
+            },
+        });
+
+    const onSubmit = async (
+        values: SignUpFormValues,
+    ) => {
+        setServerError(null);
+
+        try {
+            await signUp({
+                firstName: values.firstName,
+                lastName: values.lastName,
+                mobile: values.mobile,
+                email: values.email,
+                password: values.password,
+            });
+
+            router.push("/signin");
+        } catch (error) {
+            const parsedError =
+                getHttpError(error);
+
+            setServerError(
+                parsedError.message,
+            );
         }
-    })
-
-    const onSubmit = async (values: SignUpFormValues) => {
-        console.log(values)
-    }
-
+    };
 
     return (
         <Form {...form}>
-            <form className='w-full flex flex-col gap-4 ' onSubmit={form.handleSubmit(onSubmit)} >
+            <form
+                onSubmit={form.handleSubmit(
+                    onSubmit,
+                )}
+                className="w-full space-y-6"
+            >
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <FormField
+                        control={form.control}
+                        name="firstName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    نام
+                                </FormLabel>
+
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="نام"
+                                        className="
+                      h-11
+                      bg-neutral-900/70
+                      border-neutral-800
+                      text-white
+                      placeholder:text-neutral-600
+                      focus-visible:border-amber-500
+                      focus-visible:ring-amber-500/20
+                    "
+                                    />
+                                </FormControl>
+
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="lastName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    نام خانوادگی
+                                </FormLabel>
+
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="نام خانوادگی"
+                                        className="
+                      h-11
+                      bg-neutral-900/70
+                      border-neutral-800
+                      text-white
+                      placeholder:text-neutral-600
+                      focus-visible:border-amber-500
+                      focus-visible:ring-amber-500/20
+                    "
+                                    />
+                                </FormControl>
+
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
                 <FormField
                     control={form.control}
-                    name='name'
+                    name="mobile"
                     render={({ field }) => (
-
                         <FormItem>
-                            <FormLabel className='text-sm font-medium text-neutral-300'>
-                                نام و نام خانوادگی
-                            </FormLabel>
-
-                            <FormControl>
-                                <Input className='h-11  bg-neutral-900/70 border-neutral-800 text-white placeholder:text-neutral-600 focus-visible:border-amber-500 focus-visible:ring-amber-500/20' placeholder='نام و نام خانوادگی'  {...field} />
-                            </FormControl>
-
-
-                            <FormMessage />
-                        </FormItem>
-                    )}
-
-
-                />
-
-                <FormField
-                    control={form.control}
-                    name='phone'
-                    render={({ field }) => (
-
-                        <FormItem>
-                            <FormLabel className='text-sm font-medium text-neutral-300'>
+                            <FormLabel>
                                 شماره موبایل
                             </FormLabel>
 
                             <FormControl>
-                                <Input className='h-11  bg-neutral-900/70 border-neutral-800 text-white placeholder:text-neutral-600 focus-visible:border-amber-500 focus-visible:ring-amber-500/20' type='tel' inputMode='numeric' placeholder='09123456789' dir='ltr'  {...field} />
+                                <Input
+                                    {...field}
+                                    type="tel"
+                                    inputMode="numeric"
+                                    dir="ltr"
+                                    placeholder="09123456789"
+                                    className="
+                    h-11
+                    bg-neutral-900/70
+                    border-neutral-800
+                    text-white
+                    placeholder:text-neutral-600
+                    focus-visible:border-amber-500
+                    focus-visible:ring-amber-500/20
+                  "
+                                />
                             </FormControl>
-
 
                             <FormMessage />
                         </FormItem>
                     )}
-
-
                 />
 
                 <FormField
                     control={form.control}
-                    name='password'
+                    name="email"
                     render={({ field }) => (
-
                         <FormItem>
-                            <FormLabel className='text-sm font-medium text-neutral-300'>
+                            <FormLabel>
+                                ایمیل
+                            </FormLabel>
+
+                            <FormControl>
+                                <Input
+                                    {...field}
+                                    type="email"
+                                    dir="ltr"
+                                    placeholder="example@gmail.com"
+                                    className="
+                    h-11
+                    bg-neutral-900/70
+                    border-neutral-800
+                    text-white
+                    placeholder:text-neutral-600
+                    focus-visible:border-amber-500
+                    focus-visible:ring-amber-500/20
+                  "
+                                />
+                            </FormControl>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>
                                 رمز عبور
                             </FormLabel>
 
                             <FormControl>
-                                <PasswordInput placeholder='رمز عبور'  {...field} />
+                                <PasswordInput
+                                    {...field}
+                                    placeholder="رمز عبور"
+                                />
                             </FormControl>
-
 
                             <FormMessage />
                         </FormItem>
                     )}
-
-
                 />
-
 
                 <FormField
                     control={form.control}
-                    name='confirmPassword'
+                    name="confirmPassword"
                     render={({ field }) => (
-
                         <FormItem>
-                            <FormLabel className='text-sm font-medium text-neutral-300'>
+                            <FormLabel>
                                 تکرار رمز عبور
                             </FormLabel>
 
                             <FormControl>
-                                <PasswordInput placeholder='تکرار رمز عبور'  {...field} />
+                                <PasswordInput
+                                    {...field}
+                                    placeholder="تکرار رمز عبور"
+                                />
                             </FormControl>
-
 
                             <FormMessage />
                         </FormItem>
                     )}
-
-
                 />
-
 
                 <FormField
                     control={form.control}
-                    name='acceptedTerms'
+                    name="acceptedTerms"
                     render={({ field }) => (
                         <FormItem>
-                            <div className='flex items-start gap-3'>
+                            <div className="flex items-start gap-3">
                                 <FormControl>
-                                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={
+                                            field.onChange
+                                        }
+                                    />
                                 </FormControl>
 
-                                <FormLabel className='text-sm font-medium text-neutral-300'>
-                                    با ثبت‌نام، قوانین و حریم خصوصی را می‌پذیرم
+                                <FormLabel className="cursor-pointer leading-6">
+                                    با ثبت نام، قوانین و حریم
+                                    خصوصی را می‌پذیرم
                                 </FormLabel>
                             </div>
 
@@ -140,12 +275,36 @@ export function SignUpForm() {
                     )}
                 />
 
+                {serverError && (
+                    <div
+                        role="alert"
+                        className="
+              rounded-lg
+              border
+              border-red-500/20
+              bg-red-500/10
+              px-4
+              py-3
+              text-sm
+              text-red-400
+            "
+                    >
+                        {serverError}
+                    </div>
+                )}
 
-
-                <Button className="h-11 w-full bg-amber-800 font-medium text-white shadow-lg shadow-amber-950/20 transition-all hover:bg-amber-700 hover:shadow-amber-950/30 cursor-pointer" type='submit'  disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'لطفا صبر کنید...' : 'ثبت نام'}
+                <Button
+                    type="submit"
+                    className="h-11 w-full"
+                    disabled={
+                        form.formState.isSubmitting
+                    }
+                >
+                    {form.formState.isSubmitting
+                        ? "لطفا صبر کنید..."
+                        : "ثبت نام"}
                 </Button>
             </form>
         </Form>
-    )
+    );
 }
