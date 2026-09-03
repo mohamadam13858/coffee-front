@@ -63,6 +63,7 @@ export default function PasswordInput({
           text-neutral-500
           hover:bg-transparent
           hover:text-neutral-300
+          cursor-pointer
         "
       >
         {showPassword ? (

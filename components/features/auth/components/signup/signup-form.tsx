@@ -61,6 +61,7 @@ export function SignUpForm() {
                 password: values.password,
             });
 
+
             router.push("/signin");
         } catch (error) {
             const parsedError =
@@ -154,7 +155,7 @@ export function SignUpForm() {
                             <FormControl>
                                 <Input
                                     {...field}
-                                    type="tel"
+                                    type="number"
                                     inputMode="numeric"
                                     dir="ltr"
                                     placeholder="09123456789"
@@ -295,7 +296,7 @@ export function SignUpForm() {
 
                 <Button
                     type="submit"
-                    className="h-11 w-full"
+                    className="h-11 w-full bg-amber-700 hover:bg-amber-500 cursor-pointer"
                     disabled={
                         form.formState.isSubmitting
                     }
