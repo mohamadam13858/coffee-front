@@ -26,12 +26,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "../../services/auth.service";
 import { SignInFormValues, signInSchema } from "../../schemas/signup.schema";
+import { toast } from "sonner";
 
 export function SignInForm() {
     const router = useRouter();
-
-    const [serverError, setServerError] =
-        useState<string | null>(null);
 
     const form =
         useForm<SignInFormValues>({
@@ -47,7 +45,6 @@ export function SignInForm() {
     const onSubmit = async (
         values: SignInFormValues,
     ) => {
-        setServerError(null);
 
         try {
             await signIn({
@@ -55,15 +52,14 @@ export function SignInForm() {
                 password: values.password,
             });
 
+            toast.success('با موفقیت وارد شدید')
+
             router.replace("/");
             router.refresh();
         } catch (error) {
             const parsedError =
                 getHttpError(error);
-
-            setServerError(
-                parsedError.message,
-            );
+                toast.error(parsedError.message)
         }
     };
 
@@ -128,24 +124,6 @@ export function SignInForm() {
                         </FormItem>
                     )}
                 />
-
-                {serverError && (
-                    <div
-                        role="alert"
-                        className="
-              rounded-lg
-              border
-              border-red-500/20
-              bg-red-500/10
-              px-4
-              py-3
-              text-sm
-              text-red-400
-            "
-                    >
-                        {serverError}
-                    </div>
-                )}
 
                 <Button
                     type="submit"

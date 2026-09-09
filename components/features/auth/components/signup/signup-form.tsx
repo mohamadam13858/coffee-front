@@ -24,12 +24,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SignUpFormValues, signUpSchema } from "../../schemas/signup.schema";
 import { signUp } from "../../services/auth.service";
+import { toast } from "sonner";
 
 export function SignUpForm() {
     const router = useRouter();
-
-    const [serverError, setServerError] =
-        useState<string | null>(null);
 
     const form =
         useForm<SignUpFormValues>({
@@ -50,7 +48,6 @@ export function SignUpForm() {
     const onSubmit = async (
         values: SignUpFormValues,
     ) => {
-        setServerError(null);
 
         try {
             await signUp({
@@ -61,15 +58,14 @@ export function SignUpForm() {
                 password: values.password,
             });
 
+            toast.success("با موفقیت ثبت نام کردید")
+
 
             router.push("/signin");
         } catch (error) {
             const parsedError =
                 getHttpError(error);
-
-            setServerError(
-                parsedError.message,
-            );
+            toast.error(parsedError.message)
         }
     };
 
@@ -275,24 +271,6 @@ export function SignUpForm() {
                         </FormItem>
                     )}
                 />
-
-                {serverError && (
-                    <div
-                        role="alert"
-                        className="
-              rounded-lg
-              border
-              border-red-500/20
-              bg-red-500/10
-              px-4
-              py-3
-              text-sm
-              text-red-400
-            "
-                    >
-                        {serverError}
-                    </div>
-                )}
 
                 <Button
                     type="submit"
