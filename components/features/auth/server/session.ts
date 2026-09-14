@@ -1,35 +1,31 @@
-import "server-only"
+import "server-only";
 
 import { cache } from "react";
-import { User } from "../../users/types/user.type";
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-
-if (!API_URL) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined");
-}
+import type { User } from "@/components/features/users/types/user.type";
 
 export const getCurrentUser = cache(async (): Promise<User | null> => {
-    const cookieStore = await cookies()
+    const cookieStore = await cookies();
 
-    const accessToken = cookieStore.get("access_token")?.value
-    const refreshToken = cookieStore.get("refresh_token")?.value
+    const accessToken = cookieStore.get("access_token")?.value;
+    const refreshToken = cookieStore.get("refresh_token")?.value;
 
     if (!accessToken && !refreshToken) {
-        return null
+        return null;
     }
 
     const cookieHeader = [
         accessToken ? `access_token=${accessToken}` : null,
-        refreshToken ? `refresh_token=${refreshToken}` : null
-    ].filter(Boolean).join("; ")
+        refreshToken ? `refresh_token=${refreshToken}` : null,
+    ]
+        .filter(Boolean)
+        .join("; ");
 
     try {
-
         const response = await fetch(
-            `${API_URL}/users/me`,
+            `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
             {
                 headers: {
                     Cookie: cookieHeader,
@@ -37,21 +33,28 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
                 },
                 cache: "no-store",
             },
-        )
+        );
 
         if (response.status === 401) {
-            return null
+            return null;
         }
 
         if (!response.ok) {
-            throw new Error(
-                `Failed to fetch current user: ${response.status}`,
-            );
+            throw new Error("Failed to fetch current user");
         }
 
-        return response.json()
-
-    } catch (error) {
-        return null
+        return response.json();
+    } catch {
+        return null;
     }
-})
+});
+
+export async function requireUser(): Promise<User> {
+    const user = await getCurrentUser();
+
+    if (!user) {
+        redirect("/signin");
+    }
+
+    return user;
+}

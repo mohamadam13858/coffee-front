@@ -1,20 +1,14 @@
-'use client';
-
-import { CurrentUser } from "@/components/features/auth/components/shared/current-user";
-;
 import { Suspense } from "react";
+import { HomeContent } from "@/components/features/home/components/home-content";
+import { HomeContentFallback } from "@/components/features/home/components/home-content-fallback";
+import { HomeShell } from "@/components/features/home/components/home-shell";
 
-export default function WelcomePage() {
-
-  return (
-    <>
-      <main>
-        <h1>کافه کزوسان</h1>
-
-        <Suspense fallback={<p>در حال بررسی حساب...</p>}>
-          <CurrentUser />
-        </Suspense>
-      </main>
-    </>
-  );
+export default function HomePage() {
+    return (
+        <HomeShell>
+            <Suspense fallback={<HomeContentFallback />}>
+                <HomeContent />
+            </Suspense>
+        </HomeShell>
+    );
 }
