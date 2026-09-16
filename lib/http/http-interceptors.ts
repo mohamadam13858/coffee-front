@@ -55,7 +55,10 @@ export function setupHttpInterceptors(client: AxiosInstance) {
         return Promise.reject(error);
       }
 
-      if (originalRequest.url?.includes("/auth/refresh")) {
+      if (
+        originalRequest.url?.includes("/auth/refresh") ||
+        originalRequest.url?.includes("/auth/logout")
+      ) {
         return Promise.reject(error);
       }
 
