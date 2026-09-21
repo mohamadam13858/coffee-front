@@ -9,7 +9,9 @@ import type { ApiErrorResponse } from "./http-types";
 
 let refreshPromise: Promise<void> | null = null;
 
-async function refreshAccessToken(client: AxiosInstance): Promise<void> {
+async function refreshAccessToken(
+  client: AxiosInstance,
+): Promise<void> {
   if (!refreshPromise) {
     refreshPromise = client
       .post("/auth/refresh")
@@ -20,6 +22,16 @@ async function refreshAccessToken(client: AxiosInstance): Promise<void> {
   }
 
   return refreshPromise;
+}
+
+function handleSessionExpired() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  if (window.location.pathname !== "/signin") {
+    window.location.replace("/signin");
+  }
 }
 
 export function setupHttpInterceptors(client: AxiosInstance) {
@@ -37,9 +49,7 @@ export function setupHttpInterceptors(client: AxiosInstance) {
       return response;
     },
 
-    async (
-      error: AxiosError<ApiErrorResponse>,
-    ) => {
+    async (error: AxiosError<ApiErrorResponse>) => {
       const originalRequest =
         error.config as InternalAxiosRequestConfig & {
           _retry?: boolean;
@@ -69,6 +79,8 @@ export function setupHttpInterceptors(client: AxiosInstance) {
 
         return client(originalRequest);
       } catch (refreshError) {
+        handleSessionExpired();
+
         return Promise.reject(refreshError);
       }
     },
