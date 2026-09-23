@@ -4,9 +4,9 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Armchair } from "lucide-react";
-import { selectTable } from "../../actions/select-table";
-import type { CafeTable, SelectedTable } from "../../types/table.type";
 import { TableStatusBadge } from "./table-status-badge";
+import { CafeTable, SelectedTable } from "../types/table.type";
+import { selectTable } from "../actions/select-table";
 
 const STATUS_HINT: Record<CafeTable["status"], string> = {
     available: "آزاد",
@@ -104,9 +104,7 @@ export function TablePicker({
                             }
                         `}
                     >
-                        <span className="text-[11px] text-neutral-500">
-                            میز
-                        </span>
+                        <span className="text-[11px] text-neutral-500">میز</span>
                         <span className="text-2xl font-bold tracking-tight text-white">
                             {table.number}
                         </span>

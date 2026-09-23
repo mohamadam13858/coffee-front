@@ -11,5 +11,11 @@ export interface CafeTable {
     id: string;
     number: string;
     status: TableStatus;
+    capacity: number | null;
     isActive: boolean;
+}
+
+export interface SelectedTable {
+    id: string;
+    number: string;
 }

@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation";
 import { Armchair } from "lucide-react";
-import { getCurrentUser, requireUser } from "@/components/features/auth/server/session";
+import { requireUser } from "@/components/features/auth/server/session";
 import { TablePicker } from "@/components/features/tables/components/table-picker";
 import {
     getSelectedTable,
@@ -10,10 +9,8 @@ import { HomeGreeting } from "./home-greeting";
 import { HomeSelectedTable } from "./home-selected-table";
 
 export async function HomeContent() {
-
-    const user  = await requireUser()
-
-    const [tables, selectedTable] = await Promise.all([
+    const [user, tables, selectedTable] = await Promise.all([
+        requireUser(),
         getTables(),
         getSelectedTable(),
     ]);
@@ -47,10 +44,10 @@ export async function HomeContent() {
                 </div>
 
                 <div className="px-5 py-5">
-                    {/* <TablePicker
+                    <TablePicker
                         tables={tables}
                         selectedTable={selectedTable}
-                    /> */}
+                    />
                 </div>
             </section>
 

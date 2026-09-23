@@ -1,4 +1,5 @@
-import type { TableStatus } from "../../types/table.type";
+import { TableStatus } from "../types/table.type";
+
 
 const LABELS: Record<TableStatus, string> = {
     available: "آزاد",
