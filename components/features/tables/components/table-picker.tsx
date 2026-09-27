@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Armchair } from "lucide-react";
 import { TableStatusBadge } from "./table-status-badge";
+import { TableConfirmDialog } from "./table-confirm-dialog";
 import { CafeTable, SelectedTable } from "../types/table.type";
 import { selectTable } from "../actions/select-table";
 
@@ -19,7 +20,6 @@ function canSelectTable(table: CafeTable, selectedId?: string) {
     if (table.id === selectedId) {
         return true;
     }
-
     return table.status === "available";
 }
 
@@ -32,30 +32,35 @@ export function TablePicker({
 }) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
-    const [pendingTableId, setPendingTableId] = useState<string | null>(null);
+    const [pendingSelection, setPendingSelection] = useState<CafeTable | null>(null);
 
-    const onSelect = (table: CafeTable) => {
+    const onTap = (table: CafeTable) => {
         if (!canSelectTable(table, selectedTable?.id)) {
             toast.error(`میز ${table.number} ${STATUS_HINT[table.status]} است`);
             return;
         }
+        setPendingSelection(table);
+    };
 
-        if (table.id === selectedTable?.id) {
+    const onConfirm = () => {
+        if (!pendingSelection) {
             return;
         }
-
-        setPendingTableId(table.id);
+        const table = pendingSelection;
 
         startTransition(async () => {
-            try {
-                await selectTable(table.id, table.number);
-                toast.success(`میز ${table.number} انتخاب شد`);
+            const result = await selectTable(table.id, table.number);
+
+            if (!result.success) {
+                toast.error(result.message);
+                setPendingSelection(null);
                 router.refresh();
-            } catch {
-                toast.error("انتخاب میز انجام نشد");
-            } finally {
-                setPendingTableId(null);
+                return;
             }
+
+            toast.success(`میز ${table.number} با موفقیت انتخاب شد`);
+            setPendingSelection(null);
+            router.push("/menu");
         });
     };
 
@@ -71,55 +76,63 @@ export function TablePicker({
     }
 
     return (
-        <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-            {tables.map((table) => {
-                const selected = table.id === selectedTable?.id;
-                const selectable = canSelectTable(table, selectedTable?.id);
-                const loading = pendingTableId === table.id && isPending;
+        <>
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+                {tables.map((table) => {
+                    const selected = table.id === selectedTable?.id;
+                    const selectable = canSelectTable(table, selectedTable?.id);
 
-                return (
-                    <button
-                        key={table.id}
-                        type="button"
-                        disabled={!selectable || isPending}
-                        onClick={() => onSelect(table)}
-                        className={`
-                            relative
-                            flex
-                            min-h-24
-                            flex-col
-                            items-center
-                            justify-center
-                            gap-1.5
-                            rounded-2xl
-                            border
-                            px-2
-                            py-3
-                            transition-all
-                            ${selected
-                                ? "border-amber-500 bg-amber-500/15 shadow-[0_0_24px_rgba(245,158,11,0.18)]"
-                                : selectable
-                                    ? "border-neutral-800/80 bg-neutral-950/50 hover:border-amber-500/40 hover:bg-amber-500/5"
-                                    : "cursor-not-allowed border-neutral-900 bg-neutral-950/30 opacity-45"
-                            }
-                        `}
-                    >
-                        <span className="text-[11px] text-neutral-500">میز</span>
-                        <span className="text-2xl font-bold tracking-tight text-white">
-                            {table.number}
-                        </span>
-                        <TableStatusBadge status={table.status} selected={selected} />
-                        {table.capacity ? (
-                            <span className="text-[11px] text-neutral-500">
-                                {table.capacity} نفر
+                    return (
+                        <button
+                            key={table.id}
+                            type="button"
+                            disabled={!selectable}
+                            onClick={() => onTap(table)}
+                            className={`
+                                relative flex min-h-24 flex-col items-center justify-center gap-1.5
+                                rounded-2xl border px-2 py-3 transition-all
+                                ${
+                                    selected
+                                        ? "border-amber-500 bg-amber-500/15 shadow-[0_0_24px_rgba(245,158,11,0.18)]"
+                                        : selectable
+                                            ? "border-neutral-800/80 bg-neutral-950/50 hover:border-amber-500/40 hover:bg-amber-500/5"
+                                            : "cursor-not-allowed border-neutral-900 bg-neutral-950/30 opacity-45"
+                                }
+                            `}
+                        >
+                            <span className="text-[11px] text-neutral-500">میز</span>
+                            <span className="text-2xl font-bold tracking-tight text-white">
+                                {table.number}
                             </span>
-                        ) : null}
-                        {loading ? (
-                            <span className="absolute inset-0 rounded-2xl bg-black/40" />
-                        ) : null}
-                    </button>
-                );
-            })}
-        </div>
+                            <TableStatusBadge status={table.status} selected={selected} />
+                            {table.capacity ? (
+                                <span className="text-[11px] text-neutral-500">
+                                    {table.capacity} نفر
+                                </span>
+                            ) : null}
+                        </button>
+                    );
+                })}
+            </div>
+
+            {selectedTable ? (
+                <button
+                    type="button"
+                    onClick={() => router.push("/menu")}
+                    className="mt-4 w-full rounded-2xl bg-amber-500 py-3 text-sm font-medium text-neutral-950 transition-colors hover:bg-amber-400"
+                >
+                    ادامه با میز {selectedTable.number}
+                </button>
+            ) : null}
+
+            {pendingSelection ? (
+                <TableConfirmDialog
+                    tableNumber={pendingSelection.number}
+                    isSubmitting={isPending}
+                    onConfirm={onConfirm}
+                    onCancel={() => setPendingSelection(null)}
+                />
+            ) : null}
+        </>
     );
 }
