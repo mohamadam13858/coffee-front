@@ -1,12 +1,7 @@
 import "server-only";
 
 import { cache } from "react";
-import { cookies } from "next/headers";
 import { getAuthCookieHeader } from "@/lib/http/auth-cookies";
-import {
-    TABLE_ID_COOKIE,
-    TABLE_NUMBER_COOKIE,
-} from "../constants";
 import type { CafeTable, SelectedTable, TableStatus } from "../types/table.type";
 import { TABLE_STATUSES } from "../types/table.type";
 
@@ -91,13 +86,36 @@ export const getTables = cache(async (): Promise<CafeTable[]> => {
 });
 
 export const getSelectedTable = cache(async (): Promise<SelectedTable | null> => {
-    const cookieStore = await cookies();
-    const id = cookieStore.get(TABLE_ID_COOKIE)?.value;
-    const number = cookieStore.get(TABLE_NUMBER_COOKIE)?.value;
+    const cookieHeader = await getAuthCookieHeader();
 
-    if (!id || !number) {
+    if (!cookieHeader) {
         return null;
     }
 
-    return { id, number };
+    try {
+        const response = await fetch(`${API_URL}/reservations/me/table`, {
+            headers: { Cookie: cookieHeader, Accept: "application/json" },
+            cache: "no-store",
+        });
+
+        if (!response.ok) {
+            return null;
+        }
+
+        const payload: unknown = await response.json();
+
+        if (!payload || typeof payload !== "object") {
+            return null;
+        }
+
+        const table = payload as Record<string, unknown>;
+
+        if (typeof table.id !== "string" || typeof table.number !== "string") {
+            return null;
+        }
+
+        return { id: table.id, number: table.number };
+    } catch {
+        return null;
+    }
 });

@@ -49,7 +49,7 @@ export function TablePicker({
         const table = pendingSelection;
 
         startTransition(async () => {
-            const result = await selectTable(table.id, table.number);
+            const result = await selectTable(table.id);
 
             if (!result.success) {
                 toast.error(result.message);
