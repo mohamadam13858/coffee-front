@@ -108,13 +108,18 @@ export const getSelectedTable = cache(async (): Promise<SelectedTable | null> =>
             return null;
         }
 
-        const table = payload as Record<string, unknown>;
+        const row = payload as Record<string, unknown>;
+        const table = row.table as Record<string, unknown> | undefined;
 
-        if (typeof table.id !== "string" || typeof table.number !== "string") {
+        if (!table || typeof table.id !== "string" || typeof table.number !== "string") {
             return null;
         }
 
-        return { id: table.id, number: table.number };
+        return {
+            id: table.id,
+            number: table.number,
+            hasActiveOrder: typeof row.activeOrderId === "string",
+        };
     } catch {
         return null;
     }

@@ -17,6 +17,10 @@ export async function MenuContent() {
         redirect("/");
     }
 
+    if (selectedTable.hasActiveOrder) {
+        redirect("/order");
+    }
+
     return (
         <div className="space-y-5">
             <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">

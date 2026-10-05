@@ -18,4 +18,5 @@ export interface CafeTable {
 export interface SelectedTable {
     id: string;
     number: string;
+    hasActiveOrder: boolean;
 }
