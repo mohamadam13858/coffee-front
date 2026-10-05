@@ -1,20 +1,15 @@
 import "server-only";
 
 import { cache } from "react";
-import { cookies } from "next/headers";
 import { getAuthCookieHeader } from "@/lib/http/auth-cookies";
-import { ORDER_ID_COOKIE } from "../constants";
-import type { Order, OrderStatus } from "../types/order.type";
-import { ORDER_STATUSES } from "../types/order.type";
+import type { Order, OrderStatus } from "@/components/features/orders/types/order.type";
+import { ORDER_STATUSES } from "@/components/features/orders/types/order.type";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_URL) {
     throw new Error("NEXT_PUBLIC_API_URL is not defined");
 }
-
-
-const ACTIVE_STATUSES: OrderStatus[] = ["pending", "preparing", "ready"];
 
 function toNumber(value: unknown): number {
     if (typeof value === "number" && !Number.isNaN(value)) {
@@ -84,39 +79,31 @@ function toOrder(value: unknown): Order | null {
     };
 }
 
-export const getCurrentOrder = cache(async (): Promise<Order | null> => {
-    const cookieStore = await cookies();
-    const orderId = cookieStore.get(ORDER_ID_COOKIE)?.value;
-
-    if (!orderId) {
-        return null;
-    }
-
+export const getMyOrders = cache(async (): Promise<{ orders: Order[]; total: number }> => {
     const cookieHeader = await getAuthCookieHeader();
 
     if (!cookieHeader) {
-        return null;
+        return { orders: [], total: 0 };
     }
 
     try {
-        const response = await fetch(`${API_URL}/orders/${orderId}`, {
+        const response = await fetch(`${API_URL}/orders/my?limit=100`, {
             headers: { Cookie: cookieHeader, Accept: "application/json" },
             cache: "no-store",
         });
 
         if (!response.ok) {
-            return null;
+            return { orders: [], total: 0 };
         }
 
         const payload: unknown = await response.json();
-        const order = toOrder(payload);
+        const body = payload as { data?: unknown; total?: unknown };
+        const rows = Array.isArray(body.data) ? body.data : [];
+        const orders = rows.map(toOrder).filter((order): order is Order => order !== null);
+        const total = toNumber(body.total);
 
-        if (!order || !ACTIVE_STATUSES.includes(order.status)) {
-            return null;
-        }
-
-        return order;
+        return { orders, total: total || orders.length };
     } catch {
-        return null;
+        return { orders: [], total: 0 };
     }
 });

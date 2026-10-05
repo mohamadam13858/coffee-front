@@ -27,5 +27,6 @@ export interface Order {
     discountAmount: number;
     finalAmount: number;
     notes: string | null;
+    createdAt: string;
     items: OrderItem[];
 }
