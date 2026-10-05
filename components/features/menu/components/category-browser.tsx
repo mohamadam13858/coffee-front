@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ChevronRight, LayoutGrid } from "lucide-react";
 import type { Category, Product } from "../types/menu.type";
 import { ProductCard } from "./product-card";
+import { ProductDetailSheet } from "./product-detail-sheet";
 
 export function CategoryBrowser({
     categories,
@@ -13,6 +14,7 @@ export function CategoryBrowser({
     products: Product[];
 }) {
     const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     const activeCategory = useMemo(
         () => categories.find((category) => category.id === activeCategoryId) ?? null,
@@ -83,10 +85,21 @@ export function CategoryBrowser({
             ) : (
                 <div className="grid grid-cols-2 gap-3">
                     {visibleProducts.map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                            onClick={() => setSelectedProduct(product)}
+                        />
                     ))}
                 </div>
             )}
+
+            {selectedProduct ? (
+                <ProductDetailSheet
+                    product={selectedProduct}
+                    onClose={() => setSelectedProduct(null)}
+                />
+            ) : null}
         </div>
     );
 }

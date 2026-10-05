@@ -2,20 +2,27 @@ import type { Product } from "../types/menu.type";
 
 const priceFormatter = new Intl.NumberFormat("fa-IR");
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+    product,
+    onClick,
+}: {
+    product: Product;
+    onClick?: () => void;
+}) {
     const hasDiscount =
         product.discountPrice !== null && product.discountPrice < product.price;
 
     return (
-        <div
+        <button
+            type="button"
+            onClick={onClick}
             className={`
-                flex flex-col overflow-hidden rounded-2xl border border-neutral-800/70 bg-neutral-950/40
+                flex flex-col overflow-hidden rounded-2xl border border-neutral-800/70 bg-neutral-950/40 text-right
                 ${product.isAvailable ? "" : "opacity-50"}
             `}
         >
             <div className="flex h-28 items-center justify-center bg-neutral-900/60 text-xs text-neutral-600">
                 {product.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                         src={product.imageUrl}
                         alt={product.name}
@@ -57,6 +64,6 @@ export function ProductCard({ product }: { product: Product }) {
                     <span className="mt-1 text-[11px] text-red-400">ناموجود</span>
                 ) : null}
             </div>
-        </div>
+        </button>
     );
 }

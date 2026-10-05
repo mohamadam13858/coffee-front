@@ -14,6 +14,7 @@ export interface Product {
     discountPrice: number | null;
     isAvailable: boolean;
     isActive: boolean;
+    stock: number;
     imageUrl: string | null;
     categoryId: string;
 }

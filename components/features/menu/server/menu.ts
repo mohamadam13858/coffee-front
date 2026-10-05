@@ -78,6 +78,7 @@ function toProduct(value: unknown): Product | null {
         discountPrice: toNumber(product.discountPrice),
         isAvailable: product.isAvailable !== false,
         isActive: product.isActive !== false,
+        stock: toNumber(product.stock) ?? 0,
         imageUrl: resolveImageUrl(product.imageUrl),
         categoryId: product.categoryId,
     };

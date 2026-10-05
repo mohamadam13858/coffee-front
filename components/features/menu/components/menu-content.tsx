@@ -1,13 +1,16 @@
 import { redirect } from "next/navigation";
 import { getSelectedTable } from "@/components/features/tables/server/tables";
 import { getCategories, getProducts } from "@/components/features/menu/server/menu";
+import { getCurrentOrder } from "@/components/features/orders/server/orders";
+import { OrderSummaryBar } from "@/components/features/orders/components/order-summary-bar";
 import { CategoryBrowser } from "./category-browser";
 
 export async function MenuContent() {
-    const [selectedTable, categories, products] = await Promise.all([
+    const [selectedTable, categories, products, currentOrder] = await Promise.all([
         getSelectedTable(),
         getCategories(),
         getProducts(),
+        getCurrentOrder(),
     ]);
 
     if (!selectedTable) {
@@ -21,6 +24,8 @@ export async function MenuContent() {
             </div>
 
             <CategoryBrowser categories={categories} products={products} />
+
+            {currentOrder ? <OrderSummaryBar order={currentOrder} /> : null}
         </div>
     );
 }
